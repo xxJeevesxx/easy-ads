@@ -1,19 +1,18 @@
 import 'package:easy_ads_flutter/src/easy_ad_base.dart';
 import 'package:easy_ads_flutter/src/enums/ad_network.dart';
 import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
-import 'package:facebook_audience_network/facebook_audience_network.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:easy_audience_network/easy_audience_network.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart' as admob;
 
 class EasyFacebookBannerAd extends EasyAdBase {
-  final AdSize adSize;
+  final admob.AdSize? adSize;
 
   EasyFacebookBannerAd(
     String adUnitId, {
-    AdRequest? adRequest,
-    this.adSize = AdSize.banner,
+    this.adSize = admob.AdSize.banner,
   }) : super(adUnitId);
 
-  BannerAd? _bannerAd;
   bool _isAdLoaded = false;
 
   @override
@@ -24,43 +23,47 @@ class EasyFacebookBannerAd extends EasyAdBase {
   @override
   void dispose() {
     _isAdLoaded = false;
-    _bannerAd?.dispose();
-    _bannerAd = null;
   }
 
   @override
   bool get isAdLoaded => _isAdLoaded;
 
   @override
-  Future<void> load() async {
-    if (_isAdLoaded) return;
-  }
+  Future<void> load() async {}
 
   @override
   dynamic show() {
-    return FacebookBannerAd(
-      placementId: adUnitId,
-      bannerSize: BannerSize(width: adSize.width, height: adSize.height),
-      listener: _onAdListener,
+    final bannerSize = adSize == null
+        ? BannerSize.STANDARD
+        : BannerSize(width: adSize!.width, height: adSize!.height);
+
+    return Container(
+      height: bannerSize.height.toDouble(),
+      alignment: Alignment.center,
+      child: BannerAd(
+        placementId: adUnitId,
+        bannerSize: bannerSize,
+        listener: _onAdListener(),
+      ),
     );
   }
 
-  void _onAdListener(BannerAdResult result, dynamic value) {
-    switch (result) {
-      case BannerAdResult.ERROR:
+  BannerAdListener? _onAdListener() {
+    return BannerAdListener(
+      onLoggingImpression: () {},
+      onLoaded: () {
+        _isAdLoaded = true;
+        onAdLoaded?.call(adNetwork, adUnitType, 'Loaded');
+        onBannerAdReadyForSetState?.call(adNetwork, adUnitType, 'Loaded');
+      },
+      onClicked: () {
+        onAdClicked?.call(adNetwork, adUnitType, 'Clicked');
+      },
+      onError: (code, value) {
         _isAdLoaded = false;
         onAdFailedToLoad?.call(adNetwork, adUnitType, null,
-            'Error occurred while loading $value ad');
-        break;
-      case BannerAdResult.LOADED:
-        _isAdLoaded = true;
-        onAdLoaded?.call(adNetwork, adUnitType, 'Loaded: $value');
-        break;
-      case BannerAdResult.CLICKED:
-        onAdClicked?.call(adNetwork, adUnitType, 'Clicked: $value');
-        break;
-      case BannerAdResult.LOGGING_IMPRESSION:
-        break;
-    }
+            'Error occurred while loading $code $value ad');
+      },
+    );
   }
 }

@@ -1,3 +1,69 @@
+## 2.3.4
+* Add `isShowAppOpenOnAppStateChange` check on initialization
+* Updates dependencies
+
+## 2.3.3
+* Updates dependencies
+* Add logs for admob adapters
+
+## 2.3.2
+* Updates dependencies
+* Adds AppLovin keywords and `AdContentRating` for `isAgeRestrictedUser`
+
+## 2.3.1
+* Resolved Merge Conflicts
+
+## 2.1.1
+* Update `applovin_max: ^2.4.3`
+
+## 2.3.0
+* Adds loader before showing ad for interstitial
+
+## 2.2.1
+* Fixes large banner issue for badge
+
+## 2.2.0
+* Updates readme
+* Updates plugins
+* Adds ad badge for google ad mob compliance
+
+## 2.1.0
+* Add `easy_audience_network: ^0.0.6` for facebook audience network ads
+* Add `TestAdIdManager()` for testing ads in test mode
+
+## 2.0.2
+* Fix Initialization Bug
+* Update SKAdNetworkItems for iOS info.plist file
+
+## 2.0.1
+* Fix Banner Ad Bug 
+* Update [Applovin Max](https://pub.dev/packages/applovin_max) Plugin 
+
+## 2.0.0
+* Change Facebook Ad Plugin from [facebook_audience_network](https://pub.dev/packages/facebook_audience_network) to [audience_network: ^0.0.4](https://pub.dev/packages/audience_network)
+
+## 1.0.8
+* Adds Applovin Age restricted ads parameter
+* Update Dependencies
+* Updated docs
+
+## 1.0.7
+* Adds Smart Banner
+* Update Dependencies
+* Updated docs
+
+## 1.0.6
+* Update Dependencies
+* Adds Admob App Open Ad
+* Adds orientation for addOpen ad on initialize easyAd
+* Updated docs
+
+## 1.0.5
+* Added support for applovin_max Official plugin: 2.0.0
+* Fix Facebook banner ads
+* Added support for applovin banner ads
+* Updated docs
+
 ## 1.0.4
 * Added support for google_mobile_ads: 2.0.0
 * Updated docs
